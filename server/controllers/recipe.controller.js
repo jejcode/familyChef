@@ -31,6 +31,15 @@ const findAllRecipes = async (req, res) => {
     console.log(err);
   }
 };
+
+const findOneRecipe = async (req, res) => {
+  try {
+    const recipe = await Recipe.findOne({ _id: req.params.id });
+    return res.json(recipe);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+};
 // Update
 const updateRecipe = async (req, res) => {
   try {
@@ -51,6 +60,14 @@ const deleteRecipe = async (req, res) => {
       _id: req.params.id,
     });
     return res.json(deleteConfirmed);
-  } catch (err) {}
+  } catch (err) {
+    res.json(err)
+  }
 };
-export { createRecipe, findAllRecipes, updateRecipe, deleteRecipe };
+export {
+  createRecipe,
+  findAllRecipes,
+  findOneRecipe,
+  updateRecipe,
+  deleteRecipe,
+};
