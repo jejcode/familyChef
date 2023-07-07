@@ -31,7 +31,19 @@ const findAllRecipes = async (req, res) => {
     console.log(err);
   }
 };
-
+// Update
+const updateRecipe = async (req, res) => {
+  try {
+    const updatedRecipe = await Recipe.findOneAndUpdate(
+      { _id: req.params.id },
+      req.body,
+      { new: true }
+    );
+    return res.json(updatedRecipe);
+  } catch (err) {
+    console.log(err);
+  }
+};
 // Delete
 const deleteRecipe = async (req, res) => {
   try {
@@ -41,4 +53,4 @@ const deleteRecipe = async (req, res) => {
     return res.json(deleteConfirmed);
   } catch (err) {}
 };
-export { createRecipe, findAllRecipes, deleteRecipe };
+export { createRecipe, findAllRecipes, updateRecipe, deleteRecipe };
