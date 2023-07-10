@@ -10,7 +10,7 @@ const createRecipe = async (req, res) => {
     console.log(recipeExists);
     if (recipeExists) {
       return res
-        .status(400)
+        .status(409)
         .json({ msg: `A recipe named ${req.body.name} already exists.` });
     } else {
       const newRecipe = await Recipe.create(req.body);
