@@ -10,6 +10,10 @@ const MenuSchema = new mongoose.Schema({
     required: [true, "At least one recipe is required"],
     ref: "Recipe"
   }],
+  notes: {
+    type: String,
+    maxlength: 250
+  }
 });
 
 const Menu = mongoose.model("Menu", MenuSchema);

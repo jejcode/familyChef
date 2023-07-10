@@ -4,10 +4,12 @@ const RecipeSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Title is required"],
+    maxlength: 40
   },
   description: {
     type: String,
     required: [true, "Description is required"],
+    maxlength: 250
   },
   prepTime: {
     type: String,
