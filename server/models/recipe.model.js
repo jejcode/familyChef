@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const RecipeSchema = new mongoose.Schema({
-  title: {
+  name: {
     type: String,
     required: [true, "Title is required"],
   },
@@ -20,7 +20,11 @@ const RecipeSchema = new mongoose.Schema({
     required: [true, "Directions are required"],
   },
   ingredients: {
-    type: [{}],
+    type: [{
+      item: {type: String, required:[true, "Ingredient needs a name"]},
+      amount: {type: Number, required: [true, "Amount is required"]},
+      measurement: {type: String, required: [true, "Measurement/Qunatity is required"]}
+    }],
     required: [true, "Ingredients are required"],
   },
   menus: {

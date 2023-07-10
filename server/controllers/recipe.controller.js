@@ -23,7 +23,7 @@ const createRecipe = async (req, res) => {
 };
 
 // Read
-const findAllRecipes = async (req, res) => {
+const getAllRecipes = async (req, res) => {
   try {
     const allRecipes = await Recipe.find();
     return res.json(allRecipes);
@@ -32,7 +32,7 @@ const findAllRecipes = async (req, res) => {
   }
 };
 
-const findOneRecipe = async (req, res) => {
+const getOneRecipeById = async (req, res) => {
   try {
     const recipe = await Recipe.findOne({ _id: req.params.id });
     return res.json(recipe);
@@ -40,6 +40,23 @@ const findOneRecipe = async (req, res) => {
     res.status(400).json(err);
   }
 };
+
+const getOneRecipeByKeyword = async (req, res) => {
+  try {
+    const regex = new RegExp(req.params.keyword, 'i')
+    const recipes = await Recipe.find({$or: [
+      {name: { "$regex": regex }},
+      {description: { "$regex": regex }},
+      {"ingredients.item": {"$regex": regex }}
+    ]
+    })
+    
+    return res.json(recipes)
+  } catch (err) {
+    res.status(404).json(err)
+  }
+}
+
 // Update
 const updateRecipe = async (req, res) => {
   try {
@@ -66,8 +83,9 @@ const deleteRecipe = async (req, res) => {
 };
 export {
   createRecipe,
-  findAllRecipes,
-  findOneRecipe,
+  getAllRecipes,
+  getOneRecipeById,
+  getOneRecipeByKeyword,
   updateRecipe,
   deleteRecipe,
 };
