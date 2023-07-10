@@ -20,8 +20,8 @@ const getAllMenus = async (req, res) => {
 
 const getOneMenuById = async (req, res) => {
   try {
-    const menu = Menu.findOne({_id: req.params.id})
-    return res.json(menu)
+    const menu = Menu.findOne({ _id: req.params.id });
+    return res.json(menu);
   } catch (err) {
     res.status(400).json(err);
   }
@@ -39,4 +39,21 @@ const updateMenu = async (req, res) => {
     res.status(400).json(err);
   }
 };
-export { createMenu, getAllMenus, getOneMenuById, updateMenu };
+
+const deleteMenu = async (req, res) => {
+  try {
+    const deleteConfirmed = await Menu.findByIdAndDelete({
+      _id: req.params.id
+    })
+    return res.json(deleteConfirmed)
+  } catch (err) {
+    return res.status(403).json(err);
+  }
+};
+export { 
+  createMenu,
+  getAllMenus,
+  getOneMenuById,
+  updateMenu,
+  deleteMenu
+};

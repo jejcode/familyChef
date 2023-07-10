@@ -80,7 +80,7 @@ const updateRecipe = async (req, res) => {
 const deleteRecipe = async (req, res) => {
   try {
     const deleteConfirmed = await Recipe.findByIdAndDelete({
-      _id: req.params.id,
+      _id: req.params.id
     });
     return res.json(deleteConfirmed);
   } catch (err) {
