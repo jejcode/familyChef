@@ -3,6 +3,7 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
+import { createRecipe } from "../services/recipe-service";
 
 const intialState = {
   title: {
@@ -30,7 +31,7 @@ const intialState = {
     error: "",
   },
   amount: {
-    value: null,
+    value: "",
     error: "",
   },
   measurement: {
@@ -334,8 +335,6 @@ const RecipeForm = () => {
     });
   };
   const addIngredientsToState = () => {
-    console.log('amount:', typeof state.amount.value)
-    console.log('measuerement', typeof state.measurement.value)
     if(typeof state.amount.value == 'object') {
       dispatch({
         type: "SET_AMOUNT_ERROR",
@@ -394,9 +393,35 @@ const RecipeForm = () => {
       payload: [""],
     });
   };
-
-  const onSubmitHandler = (e) => {
+  const handleDirectionsChange = (e) => {
+    if (e.target.value.length < 5) {
+      dispatch({
+        type: "SET_DIRECTIONS_ERROR",
+        payload: "Directions must be at least 5 characters.",
+      });
+    } else {
+      dispatch({
+        type: "SET_DIRECTIONS_ERROR",
+        payload: "",
+      });
+    }
+    dispatch({
+      type: "SET_DIRECTIONS_VALUE",
+      payload: e.target.value,
+    });
+  };
+  
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
+    const newRecipe = await createRecipe({
+      title: state.title.value,
+      description: state.description.value,
+      servings: state.servings.value,
+      perpTime: state.prepTime.value,
+      ingredients: state.ingredients.value,
+      directions: state.directions.value
+    })
+    console.log('new recipe:', newRecipe)
   };
   return (
     <Form className="m-4" onSubmit={(e) => onSubmitHandler(e)}>
@@ -405,7 +430,6 @@ const RecipeForm = () => {
           Title:<span className="text-danger mx-1">{state.title.error}</span>
         </Form.Label>
         <Form.Control
-          as="input"
           type="text"
           placeholder="Type the recipe's title"
           id="title"
@@ -498,7 +522,6 @@ const RecipeForm = () => {
           <Col xs={4}>
             <Form.Label>Item</Form.Label>
             <Form.Control
-              as="input"
               type="text"
               size="sm"
               id="item"
@@ -507,14 +530,14 @@ const RecipeForm = () => {
             />
           </Col>
           <Col xs={1}>
-            <Button
+            {/* <Button
               type="button"
               className="rounded-pill"
               variant="success"
               onClick={addIngredientsToState}
             >
               +
-            </Button>
+            </Button> */}
           </Col>
         </Row>
         <div className="text-danger mx-1">{state.amount.error}</div>
@@ -525,9 +548,12 @@ const RecipeForm = () => {
         <Form.Label>Directions:</Form.Label>
         <Form.Control
           as="textarea"
-          type="input"
           placeholder="Type in directions."
           style={{ height: "200px" }}
+          id="directions"
+          value={state.directions.value}
+          onChange={(e) => handleDirectionsChange(e)}
+          
         />
       </Form.Group>
       <Row className="d-flex justify-content-center">

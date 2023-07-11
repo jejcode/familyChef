@@ -10,7 +10,7 @@ dotenv.config();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: process.env.DB_ORIGIN }));
+app.use(cors({ origin: process.env.CLIENT_ORIGIN }));
 
 // direct routes need to come after middleware
 app.use("/api/recipes", recipeRouter);

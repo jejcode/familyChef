@@ -18,7 +18,7 @@ const createRecipe = async (req, res) => {
       return res.json(newRecipe);
     }
   } catch (err) {
-    console.log(err);
+    console.log('server returns this error:', err);
   }
 };
 
