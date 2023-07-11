@@ -1,4 +1,5 @@
 import React, { useReducer } from "react";
+import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -218,6 +219,7 @@ const reducer = (state, action) => {
 
 const RecipeForm = () => {
   const [state, dispatch] = useReducer(reducer, intialState);
+  const navigate = useNavigate()
 
   const handleTitleChange = (e) => {
     if (e.target.value.length < 5) {
@@ -413,15 +415,21 @@ const RecipeForm = () => {
   
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    const newRecipe = await createRecipe({
-      title: state.title.value,
-      description: state.description.value,
-      servings: state.servings.value,
-      perpTime: state.prepTime.value,
-      ingredients: state.ingredients.value,
-      directions: state.directions.value
-    })
-    console.log('new recipe:', newRecipe)
+    try {
+      const newRecipe = await createRecipe({
+        title: state.title.value,
+        description: state.description.value,
+        servings: state.servings.value,
+        perpTime: state.prepTime.value,
+        ingredients: state.ingredients.value,
+        directions: state.directions.value
+      })
+      if(newRecipe.status == 201) {
+        navigate('/recipes/all')
+      }
+    } catch (err) {
+      console.log(err)
+    }
   };
   return (
     <Form className="m-4" onSubmit={(e) => onSubmitHandler(e)}>
@@ -530,14 +538,14 @@ const RecipeForm = () => {
             />
           </Col>
           <Col xs={1}>
-            {/* <Button
+            <Button
               type="button"
-              className="rounded-pill"
+              className="rounded-circle"
               variant="success"
               onClick={addIngredientsToState}
             >
               +
-            </Button> */}
+            </Button>
           </Col>
         </Row>
         <div className="text-danger mx-1">{state.amount.error}</div>

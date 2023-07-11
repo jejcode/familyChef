@@ -4,18 +4,15 @@ import Recipe from "../models/recipe.model.js";
 // Create
 const createRecipe = async (req, res) => {
   try {
-    console.log("incoming request:", req.body);
     // check to see if there's another recipe by the same title
     const recipeExists = await Recipe.findOne({ title: req.body.title });
-    console.log(recipeExists);
     if (recipeExists) {
       return res
         .status(409)
         .json({ msg: `A recipe named ${req.body.title} already exists.` });
     } else {
       const newRecipe = await Recipe.create(req.body);
-      console.log("new recipe:", newRecipe);
-      return res.json(newRecipe);
+      return res.status(201).json(newRecipe);
     }
   } catch (err) {
     console.log('server returns this error:', err);
