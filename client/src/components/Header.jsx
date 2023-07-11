@@ -1,0 +1,26 @@
+import React from "react";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+
+const Header = () => {
+  return (
+    <Navbar collapseOnSelect expand="md" bg="success" data-bs-theme="dark">
+      <Container fluid>
+        <Navbar.Brand href="/chef/dashboard">Family Chef</Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse
+          id="responsive-navbar-nav"
+          className="justify-content-end"
+        >
+          <Nav>
+            <Nav.Link href="/chef/recipe/all">Recipes</Nav.Link>
+            <Nav.Link href="/chef/menu/all">Menus</Nav.Link>
+            <Nav.Link href="/chef/shoppinglist">Shopping list</Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
+};
+export default Header;

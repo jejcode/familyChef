@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const RecipeSchema = new mongoose.Schema({
-  name: {
+  title: {
     type: String,
     required: [true, "Title is required"],
     maxlength: 40

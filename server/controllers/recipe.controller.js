@@ -5,13 +5,13 @@ import Recipe from "../models/recipe.model.js";
 const createRecipe = async (req, res) => {
   try {
     console.log("incoming request:", req.body);
-    // check to see if there's another recipe by the same name
-    const recipeExists = await Recipe.findOne({ name: req.body.name });
+    // check to see if there's another recipe by the same title
+    const recipeExists = await Recipe.findOne({ title: req.body.title });
     console.log(recipeExists);
     if (recipeExists) {
       return res
         .status(409)
-        .json({ msg: `A recipe named ${req.body.name} already exists.` });
+        .json({ msg: `A recipe named ${req.body.title} already exists.` });
     } else {
       const newRecipe = await Recipe.create(req.body);
       console.log("new recipe:", newRecipe);
@@ -47,7 +47,7 @@ const getRecipesByKeyword = async (req, res) => {
     const regex = new RegExp(keyword, "i");
     const recipes = await Recipe.find({
       $or: [
-        { name: { $regex: regex } },
+        { title: { $regex: regex } },
         { description: { $regex: regex } },
         {directions: { $regex: regex }},
         { "ingredients.item": { $regex: regex } },
