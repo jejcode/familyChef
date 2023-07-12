@@ -12,10 +12,10 @@ const RecipeSchema = new mongoose.Schema({
     maxlength: 250
   },
   prepTime: {
-    type: String,
+    type: String
   },
   servings: {
-    type: Number,
+    type: Number
   },
   directions: {
     type: String,

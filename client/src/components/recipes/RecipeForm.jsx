@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import { createRecipe } from "../services/recipe-service";
+import { createRecipe, updateRecipe } from "../../services/recipe-service";
 
 const intialState = {
   title: {
@@ -217,9 +217,18 @@ const reducer = (state, action) => {
   return options[action.type]() || options.default();
 };
 
-const RecipeForm = () => {
+const RecipeForm = (props) => {
+  const { editRecipe } = props;
+  const navigate = useNavigate();
+
+  if (editRecipe) {
+    for (const objectKey in intialState) {
+      if(intialState[objectKey]){
+        intialState[objectKey].value = editRecipe[objectKey] || "";
+      }
+    }
+  }
   const [state, dispatch] = useReducer(reducer, intialState);
-  const navigate = useNavigate()
 
   const handleTitleChange = (e) => {
     if (e.target.value.length < 5) {
@@ -337,41 +346,41 @@ const RecipeForm = () => {
     });
   };
   const addIngredientsToState = () => {
-    if(typeof state.amount.value == 'object') {
+    if (typeof state.amount.value == "object") {
       dispatch({
         type: "SET_AMOUNT_ERROR",
-        payload: "Amount must be at least one digit"
-      })
-      return
+        payload: "Amount must be at least one digit",
+      });
+      return;
     } else {
       dispatch({
         type: "SET_AMOUNT_ERROR",
-        payload: ""
-      })
+        payload: "",
+      });
     }
-    if(typeof state.measurement.value == 'object') {
+    if (typeof state.measurement.value == "object") {
       dispatch({
         type: "SET_MEASUREMENT_ERROR",
-        payload: "Measurement must selected"
-      })
-      return
+        payload: "Measurement must selected",
+      });
+      return;
     } else {
       dispatch({
         type: "SET_MEASUREMENT_ERROR",
-        payload: ""
-      })
+        payload: "",
+      });
     }
-    if(state.item.value.length < 2) {
+    if (state.item.value.length < 2) {
       dispatch({
         type: "SET_ITEM_ERROR",
-        payload: "Item must be at least 2 characters"
-      })
-      return
+        payload: "Item must be at least 2 characters",
+      });
+      return;
     } else {
       dispatch({
         type: "SET_ITEM_ERROR",
-        payload: ""
-      })
+        payload: "",
+      });
     }
     const ingredientData = {
       item: state.item.value,
@@ -412,23 +421,43 @@ const RecipeForm = () => {
       payload: e.target.value,
     });
   };
-  
+
+  const cancelForm = () => {
+    if(editRecipe){
+      navigate(`/chef/recipes/${editRecipe._id}/view`)
+    } else {
+      navigate('/chef/recipes/all')
+    }
+  }
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    try {
-      const newRecipe = await createRecipe({
-        title: state.title.value,
-        description: state.description.value,
-        servings: state.servings.value,
-        perpTime: state.prepTime.value,
-        ingredients: state.ingredients.value,
-        directions: state.directions.value
-      })
-      if(newRecipe.status == 201) {
-        navigate('/recipes/all')
+    const recipeToSave = {
+      title: state.title.value,
+      description: state.description.value,
+      servings: state.servings.value,
+      prepTime: state.prepTime.value,
+      ingredients: state.ingredients.value,
+      directions: state.directions.value,
+    };
+    if (editRecipe) {
+      try {
+        const updatedRecipe = await updateRecipe(editRecipe._id, recipeToSave);
+        console.log(updatedRecipe)
+        navigate(`/chef/recipes/${updatedRecipe._id}/view`);
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err)
+    } else {
+      try {
+        const newRecipe = await createRecipe(recipeToSave);
+        if (newRecipe.status == 201) {
+          navigate("/recipes/all");
+          setCurrentRecipe(newRecipe.data);
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
   return (
@@ -461,7 +490,10 @@ const RecipeForm = () => {
       <Form.Group className="mb-3">
         <Row>
           <Col xs="auto">
-            <Form.Label>Servings:<span className="text-danger mx-1">{state.servings.error}</span></Form.Label>
+            <Form.Label>
+              Servings:
+              <span className="text-danger mx-1">{state.servings.error}</span>
+            </Form.Label>
             <Form.Control
               type="number"
               id="servings"
@@ -470,7 +502,10 @@ const RecipeForm = () => {
             />
           </Col>
           <Col xs="auto">
-            <Form.Label>Prep time:<span className="text-danger mx-1">{state.prepTime.error}</span></Form.Label>
+            <Form.Label>
+              Prep time:
+              <span className="text-danger mx-1">{state.prepTime.error}</span>
+            </Form.Label>
             <Form.Control
               type="text"
               id="prepTime"
@@ -561,12 +596,14 @@ const RecipeForm = () => {
           id="directions"
           value={state.directions.value}
           onChange={(e) => handleDirectionsChange(e)}
-          
         />
       </Form.Group>
       <Row className="d-flex justify-content-center">
         <Col xs="auto">
-          <Button type="submit">Create</Button>
+          <Button className="me-4" type="button" variant="danger" onClick={cancelForm}>Cancel</Button>
+          <Button type="submit">{
+            editRecipe ? 'Save' : 'Create'
+          }</Button>
         </Col>
       </Row>
     </Form>

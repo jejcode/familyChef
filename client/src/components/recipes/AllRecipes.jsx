@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getAllRecipes } from "../services/recipe-service";
+import { getAllRecipes } from "../../services/recipe-service";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
+import {BsFillPlusCircleFill, BsJournalPlus} from "react-icons/bs"
 
 const AllRecipes = () => {
   const [loaded, setLoaded] = useState(false);
@@ -28,6 +29,11 @@ const AllRecipes = () => {
         <Col>
           <h2>All Recipes</h2>
         </Col>
+        <Col>
+        <Link to="/chef/recipes/new">
+          <BsFillPlusCircleFill />
+        </Link>
+        </Col>
       </Row>
       <Row>
         <Col>
@@ -35,16 +41,12 @@ const AllRecipes = () => {
             return (
               <Row key={index} className="mb-1 align-items-center">
                 <Col>
-                  <Link to={`/chef/recipes/${recipe._id}/view`}>{recipe.title}</Link>
+                  <Link to={`/chef/recipes/${recipe._id}/view`}>
+                    {recipe.title}
+                  </Link>
                 </Col>
                 <Col>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    className="rounded-circle"
-                  >
-                    +
-                  </Button>
+                  <BsJournalPlus />
                 </Col>
               </Row>
             );

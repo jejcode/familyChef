@@ -30,4 +30,13 @@ const getRecipeById = async (id) => {
     console.log(err);
   }
 };
-export { createRecipe, getAllRecipes, getRecipeById };
+
+const updateRecipe = async (id, formData) => {
+  try{
+    const updatedRecipe = await instance.put(`/recipes/${id}/edit`, formData)
+    return updatedRecipe.data
+  } catch (err) {
+    console.log(err)
+  }
+}
+export { createRecipe, getAllRecipes, getRecipeById, updateRecipe };
