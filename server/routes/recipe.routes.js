@@ -6,7 +6,6 @@ import {
   getOneRecipeById,
   getRecipesByKeyword,
   updateRecipe,
-  updateRecipeMenu,
   updateAllRecipesOnMenu
 } from "../controllers/recipe.controller.js";
 const recipeRouter = Router();
