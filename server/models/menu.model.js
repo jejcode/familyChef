@@ -7,7 +7,6 @@ const MenuSchema = new mongoose.Schema({
   },
   items: [{
     type: mongoose.Schema.Types.ObjectId,
-    required: [true, "At least one recipe is required"],
     ref: "Recipe"
   }],
   notes: {

@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getAllRecipes } from "../../services/recipe-service";
+import { getAllMenus } from "../../services/menu-service";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import {BsFillPlusCircleFill, BsJournalPlus} from "react-icons/bs"
+import {BsFillPlusCircleFill} from "react-icons/bs"
 
-const AllRecipes = () => {
+const AllMenus = () => {
   const [loaded, setLoaded] = useState(false);
-  const [allRecipes, setAllRecipes] = useState([]);
+  const [allMenus, setAllMenus] = useState([]);
 
   useEffect(() => {
     (async () => {
       try {
-        const recipes = await getAllRecipes();
-        setAllRecipes(recipes);
+        const menus = await getAllMenus();
+        setAllMenus(menus);
         setLoaded(true);
       } catch (err) {
         console.log(err);
@@ -26,26 +26,26 @@ const AllRecipes = () => {
     <Container className="mt-2">
       <Row>
         <Col>
-          <h2>All Recipes</h2>
+          <h2>All Menus</h2>
         </Col>
         <Col>
-        <Link to="/chef/recipes/new">
+        <Link to="/chef/menus/new">
           <BsFillPlusCircleFill />
         </Link>
         </Col>
       </Row>
       <Row>
         <Col>
-          {allRecipes.map((recipe, index) => {
+          {allMenus.map((menu, index) => {
             return (
-              <Row key={index} className="mb-1 align-items-center">
-                <Col>
-                  <Link to={`/chef/recipes/${recipe._id}/view`}>
-                    {recipe.title}
+              <Row key={index} className="mb-2">
+                <Col lg="auto">
+                  <Link to={`/chef/menus/${menu._id}/view`}>
+                    {menu.date.slice(0,10)}
                   </Link>
                 </Col>
-                <Col>
-                  <BsJournalPlus />
+                <Col lg="auto">
+                  {menu.notes && <p>Notes: {menu.notes}</p>}
                 </Col>
               </Row>
             );
@@ -55,4 +55,4 @@ const AllRecipes = () => {
     </Container>
   );
 };
-export default AllRecipes;
+export default AllMenus;

@@ -32,11 +32,27 @@ const getRecipeById = async (id) => {
 };
 
 const updateRecipe = async (id, formData) => {
-  try{
-    const updatedRecipe = await instance.put(`/recipes/${id}/edit`, formData)
-    return updatedRecipe.data
+  try {
+    const updatedRecipe = await instance.put(`/recipes/${id}/edit`, formData);
+    return updatedRecipe.data;
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
-}
-export { createRecipe, getAllRecipes, getRecipeById, updateRecipe };
+};
+
+const updateAllRecipesOnMenu = async (recipes) => {
+  try {
+    const recipesWithMenuIds = await instance.put("recipes/menus/update", recipes);
+    console.log(recipesWithMenuIds);
+    return recipesWithMenuIds.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+export {
+  createRecipe,
+  getAllRecipes,
+  getRecipeById,
+  updateRecipe,
+  updateAllRecipesOnMenu,
+};

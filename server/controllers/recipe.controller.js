@@ -15,7 +15,7 @@ const createRecipe = async (req, res) => {
       return res.status(201).json(newRecipe);
     }
   } catch (err) {
-    console.log('server returns this error:', err);
+    console.log("server returns this error:", err);
   }
 };
 
@@ -39,22 +39,22 @@ const getOneRecipeById = async (req, res) => {
 };
 
 const getRecipesByKeyword = async (req, res) => {
-  let keyword = req.params.keyword.replaceAll('_', ' ')
+  let keyword = req.params.keyword.replaceAll("_", " ");
   try {
     const regex = new RegExp(keyword, "i");
     const recipes = await Recipe.find({
       $or: [
         { title: { $regex: regex } },
         { description: { $regex: regex } },
-        {directions: { $regex: regex }},
+        { directions: { $regex: regex } },
         { "ingredients.item": { $regex: regex } },
       ],
     });
     if (recipes.length === 0) {
-      throw new Error("No recipes found.")
+      throw new Error("No recipes found.");
     } else {
       return res.json(recipes);
-    };
+    }
   } catch (err) {
     return res.status(404).json(err);
   }
@@ -73,11 +73,28 @@ const updateRecipe = async (req, res) => {
     console.log(err);
   }
 };
+
+const updateAllRecipesOnMenu = async (req, res) => {
+  //req.body has menuId and an array of recipeIds
+  console.log('menuId:', req.body.menuId)
+  console.log('recipe Ids:', req.body.recipeIds)
+  try {
+    const recipesWithMenus = await Recipe.updateMany(
+      { _id: { $in: req.body.recipeIds } },
+      { $push: { menus: req.body.menuId } },
+      {new: true}
+    );
+    return res.json(recipesWithMenus.data)
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 // Delete
 const deleteRecipe = async (req, res) => {
   try {
     const deleteConfirmed = await Recipe.findByIdAndDelete({
-      _id: req.params.id
+      _id: req.params.id,
     });
     return res.json(deleteConfirmed);
   } catch (err) {
@@ -90,5 +107,6 @@ export {
   getOneRecipeById,
   getRecipesByKeyword,
   updateRecipe,
+  updateAllRecipesOnMenu,
   deleteRecipe,
 };

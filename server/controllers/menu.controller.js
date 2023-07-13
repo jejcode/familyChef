@@ -11,9 +11,10 @@ const createMenu = async (req, res) => {
 
 const getAllMenus = async (req, res) => {
   try {
-    allMenus = await Menu.find();
+    const allMenus = await Menu.find();
     return res.json(allMenus);
   } catch (err) {
+    console.log(err)
     res.status(400).json(err);
   }
 };

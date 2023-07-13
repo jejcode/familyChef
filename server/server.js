@@ -14,7 +14,7 @@ app.use(cors({ origin: process.env.CLIENT_ORIGIN }));
 
 // direct routes need to come after middleware
 app.use("/api/recipes", recipeRouter);
-app.use("/api/menus", menuRouter)
+app.use("/api/menus", menuRouter);
 // const myFirstSecret = process.env.FIRST_SECRET_KEY
 const serverStart = async () => {
   try {
