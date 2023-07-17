@@ -29,14 +29,6 @@ const RecipeSchema = new mongoose.Schema({
     }],
     required: [true, "Ingredients are required"],
   },
-  menus: {
-    type: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Menu",
-      },
-    ],
-  },
 });
 const Recipe = mongoose.model("Recipe", RecipeSchema);
 export default Recipe;

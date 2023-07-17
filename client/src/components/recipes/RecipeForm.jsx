@@ -1,9 +1,11 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
+import { BsXLg } from "react-icons/bs";
+
 import { createRecipe, updateRecipe } from "../../services/recipe-service";
 
 const intialState = {
@@ -219,11 +221,12 @@ const reducer = (state, action) => {
 
 const RecipeForm = (props) => {
   const { editRecipe } = props;
+  const inputRef = useRef(null)
   const navigate = useNavigate();
 
   if (editRecipe) {
     for (const objectKey in intialState) {
-      if(intialState[objectKey]){
+      if (intialState[objectKey]) {
         intialState[objectKey].value = editRecipe[objectKey] || "";
       }
     }
@@ -299,6 +302,7 @@ const RecipeForm = (props) => {
     });
   };
   const handleAmountChange = (e) => {
+    
     if (!e.target.value) {
       dispatch({
         type: "SET_AMOUNT_ERROR",
@@ -403,6 +407,7 @@ const RecipeForm = (props) => {
       type: "SET_ITEM_VALUE",
       payload: [""],
     });
+    inputRef.current.focus()
   };
   const handleDirectionsChange = (e) => {
     if (e.target.value.length < 5) {
@@ -422,13 +427,24 @@ const RecipeForm = (props) => {
     });
   };
 
+  const removeIngredientFromList = (ingredientIndex) => {
+    dispatch({
+      type: "SET_INGREDIENTS_VALUE",
+      payload: state.ingredients.value.reduce((arr, ingredient, index) => {
+        if (ingredientIndex != index) {
+          arr.push(ingredient);
+        }
+        return arr;
+      }, []),
+    });
+  };
   const cancelForm = () => {
-    if(editRecipe){
-      navigate(`/chef/recipes/${editRecipe._id}/view`)
+    if (editRecipe) {
+      navigate(`/chef/recipes/${editRecipe._id}/view`);
     } else {
-      navigate('/chef/recipes/all')
+      navigate("/chef/recipes/all");
     }
-  }
+  };
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -443,7 +459,7 @@ const RecipeForm = (props) => {
     if (editRecipe) {
       try {
         const updatedRecipe = await updateRecipe(editRecipe._id, recipeToSave);
-        console.log(updatedRecipe)
+        console.log(updatedRecipe);
         navigate(`/chef/recipes/${updatedRecipe._id}/view`);
       } catch (err) {
         console.log(err);
@@ -452,8 +468,7 @@ const RecipeForm = (props) => {
       try {
         const newRecipe = await createRecipe(recipeToSave);
         if (newRecipe.status == 201) {
-          navigate("/recipes/all");
-          setCurrentRecipe(newRecipe.data);
+          navigate("/chef/recipes/all");
         }
       } catch (err) {
         console.log(err);
@@ -519,9 +534,17 @@ const RecipeForm = (props) => {
         {state.ingredients.value.length > 0 &&
           state.ingredients.value.map((ingredient, index) => {
             return (
-              <p key={index} className="bg-light">
-                {ingredient.amount} {ingredient.measurement} {ingredient.item}
-              </p>
+              <Row key={index} className="align-items-center m-2 p-2">
+                <Col xs="auto" lg={true} className="bg-light p-2">
+                  <div>
+                    {ingredient.amount} {ingredient.measurement}{" "}
+                    {ingredient.item}
+                  </div>
+                </Col>
+                <Col xs={1} sm={1} md={1} lg={1} className="bg-light p-2">
+                  <BsXLg onClick={() => removeIngredientFromList(index)} />
+                </Col>
+              </Row>
             );
           })}
       </div>
@@ -530,6 +553,7 @@ const RecipeForm = (props) => {
           <Col xs="2">
             <Form.Label>Amnt.</Form.Label>
             <Form.Control
+              ref={inputRef}
               type="text"
               size="sm"
               id="amount"
@@ -600,10 +624,15 @@ const RecipeForm = (props) => {
       </Form.Group>
       <Row className="d-flex justify-content-center">
         <Col xs="auto">
-          <Button className="me-4" type="button" variant="danger" onClick={cancelForm}>Cancel</Button>
-          <Button type="submit">{
-            editRecipe ? 'Save' : 'Create'
-          }</Button>
+          <Button
+            className="me-4"
+            type="button"
+            variant="danger"
+            onClick={cancelForm}
+          >
+            Cancel
+          </Button>
+          <Button type="submit">{editRecipe ? "Save" : "Create"}</Button>
         </Col>
       </Row>
     </Form>

@@ -5,7 +5,7 @@ const MenuSchema = new mongoose.Schema({
     type: Date, 
     required: [true, "Date is required"] 
   },
-  items: [{
+  recipes: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Recipe"
   }],

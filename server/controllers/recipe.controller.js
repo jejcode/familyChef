@@ -1,4 +1,6 @@
 import Recipe from "../models/recipe.model.js";
+// import Menu from "../models/menu.model.js";
+// import { UpdateMenuByDeletingRecipe } from "./menu.controller.js";
 
 // CRUD Functionality
 // Create
@@ -76,8 +78,8 @@ const updateRecipe = async (req, res) => {
 
 const updateAllRecipesOnMenu = async (req, res) => {
   //req.body has menuId and an array of recipeIds
-  console.log('menuId:', req.body.menuId)
-  console.log('recipe Ids:', req.body.recipeIds)
+  // console.log('menuId:', req.body.menuId)
+  // console.log('recipe Ids:', req.body.recipeIds)
   try {
     const recipesWithMenus = await Recipe.updateMany(
       { _id: { $in: req.body.recipeIds } },
@@ -93,14 +95,27 @@ const updateAllRecipesOnMenu = async (req, res) => {
 // Delete
 const deleteRecipe = async (req, res) => {
   try {
+    console.log('deleteing called')
+    const recipeId = req.params.id
+    // const removeRecipeFromMenus = await Menu.UpdateMenuByDeletingRecipe({_id: recipeId})
     const deleteConfirmed = await Recipe.findByIdAndDelete({
-      _id: req.params.id,
+      _id: recipeId,
     });
+    // delete recipe Id from any menus
     return res.json(deleteConfirmed);
   } catch (err) {
     res.json(err);
   }
 };
+
+const deleteAllMenus = async (req, res) => {
+  try {
+    const nuclearBlast = await Recipe.updateMany({}, { $unset: {menus: []}})
+    console.log(nuclearBlast)
+  } catch (error) {
+    console.log(error)
+  }
+}
 export {
   createRecipe,
   getAllRecipes,
@@ -109,4 +124,5 @@ export {
   updateRecipe,
   updateAllRecipesOnMenu,
   deleteRecipe,
+  deleteAllMenus
 };

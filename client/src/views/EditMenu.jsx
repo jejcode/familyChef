@@ -4,21 +4,21 @@ import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import MenuForm from "../components/menus/MenuForm";
 
-const NewMenu = () => {
+const EditMenu = () => {
   return (
     <Container>
       <Row>
         <Col>
-        <h1>Create New Menu</h1>
+          <h1>Edit Menu</h1>
         </Col>
       </Row>
       <Row>
         <Col>
-          <MenuForm editForm={false}/>
+          <MenuForm editForm={true} />
         </Col>
       </Row>
     </Container>
-  )
-}
+  );
+};
 
-export default NewMenu
+export default EditMenu;

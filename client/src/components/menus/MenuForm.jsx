@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/esm/Button";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import { BsXLg } from "react-icons/bs";
-import { getAllRecipes, updateAllRecipesOnMenu } from "../../services/recipe-service";
-import { createMenu } from "../../services/menu-service";
+import { getAllRecipes } from "../../services/recipe-service";
+import { createMenu, getMenuById, updateMenuById } from "../../services/menu-service";
 
-const MenuForm = () => {
+const MenuForm = (props) => {
+  const {editForm} = props
+  const {id} = useParams()
+  const [editMenuId, setEditMenuId] = useState("")
   const [menuDate, setMenuDate] = useState("");
   const [menuDateError, setMenuDateError] = useState("Date is required");
   const [menuNotes, setMenuNotes] = useState("");
@@ -53,7 +56,7 @@ const MenuForm = () => {
   };
 
   const deleteRecipeFromMenu = (recipeIndex) => {
-    setSelectedRecipes((prevSelectedRecipes) =>
+    setSelectedRecipes(prevSelectedRecipes =>
       prevSelectedRecipes.reduce((arr, recipe, index) => {
         if (index != recipeIndex) arr.push(recipe);
         return arr;
@@ -66,6 +69,15 @@ const MenuForm = () => {
         const listOfRecipes = await getAllRecipes();
         setAllRecipes(listOfRecipes);
         setLoaded(true);
+
+        if(editForm) {
+          const thisMenu = await getMenuById(id)
+          setEditMenuId(thisMenu._id)
+          setMenuDate(thisMenu.date.slice(0,10))
+          setMenuDateError("")
+          setMenuNotes(thisMenu.notes)
+          setSelectedRecipes(thisMenu.recipes)
+        }
       } catch (err) {
         console.log(err);
       }
@@ -75,13 +87,18 @@ const MenuForm = () => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     const recipeIds = selectedRecipes.map((recipe) => recipe._id);
+    const menuData = {
+      date: menuDate,
+      recipes: recipeIds,
+      notes: menuNotes,
+    }
     try {
-      const newMenu = await createMenu({
-        date: menuDate,
-        items: recipeIds,
-        notes: menuNotes,
-      });
-      const recipesWithMenu = await updateAllRecipesOnMenu({recipeIds, menuId: newMenu._id})
+      if(editForm) {
+        const updateMenu = await updateMenuById(editMenuId, menuData)
+        navigate(`chef/menus/${editMenuId}/view`)
+      } else {
+        const newMenu = await createMenu(menuData);
+      }
       navigate("/chef/menus/all");
     } catch (err) {
       console.log(err);

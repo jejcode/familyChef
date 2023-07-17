@@ -42,17 +42,28 @@ const updateRecipe = async (id, formData) => {
 
 const updateAllRecipesOnMenu = async (recipes) => {
   try {
-    const recipesWithMenuIds = await instance.put("recipes/menus/update", recipes);
+    const recipesWithMenuIds = await instance.put("/recipes/menus/update", recipes);
     console.log(recipesWithMenuIds);
     return recipesWithMenuIds.data;
   } catch (err) {
     console.log(err);
   }
 };
+
+const deleteRecipeById = async (recipeId) => {
+  try {
+    console.log('services is deleting...')
+    const deletedRecipe = await instance.delete(`/recipes/${recipeId}/delete`)
+    return deletedRecipe.data
+  } catch (error) {
+    console.log(error)
+  }
+}
 export {
   createRecipe,
   getAllRecipes,
   getRecipeById,
   updateRecipe,
   updateAllRecipesOnMenu,
+  deleteRecipeById
 };
