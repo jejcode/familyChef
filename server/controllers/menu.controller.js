@@ -11,7 +11,7 @@ const createMenu = async (req, res) => {
 
 const getAllMenus = async (req, res) => {
   try {
-    const allMenus = await Menu.find();
+    const allMenus = await Menu.find().sort({date: 'desc'}).populate("recipes");
     return res.json(allMenus);
   } catch (err) {
     console.log(err);

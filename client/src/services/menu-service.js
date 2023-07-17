@@ -87,5 +87,5 @@ export {
   getMenusByDateRange,
   updateMenuById,
   updateMenuRecipes,
-  deleteMenuById,
+  deleteMenuById
 };

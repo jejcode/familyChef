@@ -1,6 +1,6 @@
 const makeDatePrettier = (dateString) => {
-  const date = new Date('2023-07-14')
-  return date.toDateString()
+  const date = new Date(dateString.slice(0,-1))
+  return date.toDateString().slice(0,10)
 }
 
 export {makeDatePrettier}

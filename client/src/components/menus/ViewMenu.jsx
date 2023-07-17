@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Container from "react-bootstrap/esm/Container";
 import Accordian from "react-bootstrap/Accordion"
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import { getMenuById } from "../../services/menu-service";
+import PageLinks from "../navigation/PageLinks";
+
 const ViewMenu = () => {
   const [menu, setMenu] = useState([])
   const [loaded, setLoaded] = useState(false)
@@ -22,8 +24,15 @@ const ViewMenu = () => {
   return (
     <>
       {loaded &&
-        <Container>
-          <h1>Menu for {menu.date}</h1>
+        <Container className="mt-2">
+          <Row className="align-items-center justify-content-space-between mb-2">
+            <Col>
+              <h1>Menu for {menu.date}</h1>
+            </Col>
+            <Col xs="auto" sm="auto" md="auto" lg="auto">
+              <PageLinks addLinks={[{href: `/chef/menus/${menu._id}/edit`, text: 'Edit'}]}/>
+            </Col>
+          </Row>
           <Accordian defaultActiveKey="0" variant="success">
             {menu.recipes.map((recipe,index) => {
               return(
