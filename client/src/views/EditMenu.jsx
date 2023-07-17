@@ -7,7 +7,7 @@ import MenuForm from "../components/menus/MenuForm";
 const EditMenu = () => {
   return (
     <Container>
-      <Row>
+      <Row className="m-2">
         <Col>
           <h1>Edit Menu</h1>
         </Col>

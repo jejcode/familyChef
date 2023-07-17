@@ -83,7 +83,9 @@ const MenuForm = (props) => {
       }
     })();
   }, []);
-
+  const cancelForm = () => {
+    navigate('/chef/menus/all')
+  }
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     const recipeIds = selectedRecipes.map((recipe) => recipe._id);
@@ -108,9 +110,9 @@ const MenuForm = (props) => {
     <Container className="m-2">
       {loaded && (
         <>
-          <Form onSubmit={(e) => onSubmitHandler(e)}>
+          <Form onSubmit={(e) => onSubmitHandler(e)} className="p-4 border bg-light">
             <Form.Group as={Row} className="align-items-end mb-2">
-              <Col xs="auto" lg="auto">
+              <Col xs="12" sm="12" md="4" lg="4">
                 <Form.Label>
                   Date: <span className="text-danger">{menuDateError}</span>
                 </Form.Label>
@@ -120,7 +122,7 @@ const MenuForm = (props) => {
                   value={menuDate}
                 />
               </Col>
-              <Col>
+              <Col xs="12" sm="12" md="8" lg="8">
                 <Form.Label>Notes:</Form.Label>
                 <Form.Control
                   type="text"
@@ -129,7 +131,7 @@ const MenuForm = (props) => {
                 />
               </Col>
             </Form.Group>
-            <Form.Group as={Row} className="align-items-end">
+            <Form.Group as={Row} className="mb-4">
               <Col className="overflow-auto">
                 {selectedRecipes.length === 0 ? (
                   <p className="text-danger">No recipes selected.</p>
@@ -146,11 +148,13 @@ const MenuForm = (props) => {
                   </div>
                 )}
               </Col>
-              <Col>
-                <Button type="submit">Save</Button>
-              </Col>
             </Form.Group>
+            <div className=" d-flex justify-content-center">
+              {editForm && <Button variant="light" className="me-4" onClick={cancelForm}>Cancel</Button>}
+              <Button type="submit" variant="success">Save</Button>
+            </div>
           </Form>
+          
           <Row className="my-3">
             <Col>
               <Form.Control
@@ -172,6 +176,7 @@ const MenuForm = (props) => {
                         key={index}
                         className="mb-2"
                         onClick={() => addRecipeToMenu(recipe)}
+                        variant="outline-success"
                       >
                         {recipe.title}
                       </Button>
@@ -186,6 +191,7 @@ const MenuForm = (props) => {
                         key={index}
                         className="mb-2"
                         onClick={() => addRecipeToMenu(recipe)}
+                        variant="outline-success"
                       >
                         {recipe.title}
                       </Button>
