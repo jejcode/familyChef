@@ -15,7 +15,6 @@ const ViewMenu = () => {
       const menu = await getMenuById(id)
       let slicedDate = menu.date.slice(0,10)
       menu.date = new Date(slicedDate).toDateString()
-      console.log('after conversion', menu.date)
       setMenu(menu)
       setLoaded(true)
     })()
