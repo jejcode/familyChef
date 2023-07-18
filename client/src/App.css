@@ -5,3 +5,8 @@
 .changePointer {
   cursor: pointer
 }
+
+.deleteHover:hover {
+  background: pink;
+}
+

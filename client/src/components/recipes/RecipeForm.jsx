@@ -1,10 +1,11 @@
 import React, { useReducer, useRef } from "react";
+import "../../App.css"
 import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import { BsXLg } from "react-icons/bs";
+import xMark from '../../assets/x-mark.png'
 
 import { createRecipe, updateRecipe } from "../../services/recipe-service";
 
@@ -569,15 +570,15 @@ const RecipeForm = (props) => {
         {state.ingredients.value.length > 0 &&
           state.ingredients.value.map((ingredient, index) => {
             return (
-              <Row key={index} className="align-items-center m-2 p-2">
-                <Col xs="auto" lg={true} className="bg-light p-2">
-                  <div>
+              <Row key={index} className="align-items-center m-2 p-2 justify-content-between deleteHover">
+                <Col className="p-2">
+                  <span>
                     {ingredient.amount} {ingredient.measurement}{" "}
                     {ingredient.item}
-                  </div>
+                  </span>
                 </Col>
-                <Col xs={1} sm={1} md={1} lg={1} className="bg-light p-2">
-                  <BsXLg onClick={() => removeIngredientFromList(index)} />
+                <Col className="d-flex justify-content-end">
+                  <img src={xMark} className="changePointer" width="25" onClick={() => removeIngredientFromList(index)} />
                 </Col>
               </Row>
             );

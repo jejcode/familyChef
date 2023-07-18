@@ -5,7 +5,7 @@ import Button from "react-bootstrap/esm/Button";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
-import { BsXLg } from "react-icons/bs";
+import xMark from '../../assets/x-mark.png'
 import { getAllRecipes } from "../../services/recipe-service";
 import { createMenu, getMenuById, updateMenuById } from "../../services/menu-service";
 
@@ -139,9 +139,9 @@ const MenuForm = (props) => {
                   <div>
                     {selectedRecipes.map((recipe, index) => {
                       return (
-                        <div key={index}>
-                          {recipe.title}{" "}
-                          <BsXLg onClick={() => deleteRecipeFromMenu(index)} />
+                        <div key={index} className="mb-2 p-2 border d-flex justify-content-between deleteHover">
+                          {recipe.title}
+                          <img className="changePointer ms-4" src={xMark} width="25" onClick={() => deleteRecipeFromMenu(index)} />
                         </div>
                       );
                     })}
@@ -150,7 +150,7 @@ const MenuForm = (props) => {
               </Col>
             </Form.Group>
             <div className=" d-flex justify-content-center">
-              {editForm && <Button variant="light" className="me-4" onClick={cancelForm}>Cancel</Button>}
+              <Button variant="light" className="me-4" onClick={cancelForm}>Cancel</Button>
               <Button type="submit" variant="success">Save</Button>
             </div>
           </Form>

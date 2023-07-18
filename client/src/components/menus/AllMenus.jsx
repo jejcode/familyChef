@@ -14,7 +14,7 @@ const AllMenus = () => {
           <h2>All Menus</h2>
         </Col>
         <Col>
-          <PageLinks />
+          <PageLinks addLinks={[{href: '/chef/menus/new', text: 'New'}]}/>
         </Col>
       </Row>
       <Row>

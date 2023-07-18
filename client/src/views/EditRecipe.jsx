@@ -37,9 +37,6 @@ const EditRecipe = () => {
             <Col sx="auto" sm="auto" md="auto" lg="auto">
               <h2>Edit {currentRecipe.title}</h2>
             </Col>
-            <Col sx="auto" sm="auto" md="auto" lg="auto">
-              <BsFillTrashFill onClick={() => deleteRecipe(currentRecipe._id)}/>
-            </Col>
           </Row>
           <Row>
             <Col>
