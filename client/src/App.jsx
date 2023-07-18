@@ -18,6 +18,7 @@ function App() {
     <BrowserRouter>
       <Header />
       <Routes>
+        <Route element={<Dashboard />} path="/" />
         <Route element={<Dashboard />} path="/dashboard" />
         <Route element={<NewRecipe />} path="chef/recipes/new" />
         <Route element={<AllRecipes />} path="chef/recipes/all" />
