@@ -431,7 +431,6 @@ const RecipeForm = (props) => {
       payload: e.target.value,
     });
   };
-
   const removeIngredientFromList = (ingredientIndex) => {
     dispatch({
       type: "SET_INGREDIENTS_VALUE",
@@ -456,7 +455,6 @@ const RecipeForm = (props) => {
       navigate("/chef/recipes/all");
     }
   };
-
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     const recipeToSave = {
@@ -586,18 +584,17 @@ const RecipeForm = (props) => {
       </div>
       <Form.Group className="mb-3">
         <Row className="align-items-end">
-          <Col xs="2">
+          <Col xs="2" sm="2" md={2} lg={2}>
             <Form.Label>Amnt.</Form.Label>
             <Form.Control
               ref={inputRef}
               type="text"
-              size="sm"
               id="amount"
               value={state.amount.value}
               onChange={(e) => handleAmountChange(e)}
             />
           </Col>
-          <Col xs="auto">
+          <Col xs="6" sm="6" md={2} lg={2}>
             <Form.Select
               aria-label="Measurment"
               id="measurement"
@@ -619,20 +616,22 @@ const RecipeForm = (props) => {
               <option value="g.">g</option>
               <option value="kg.">kg</option>
               <option value="doz.">doz</option>
-              <option value="ea.">ea</option>
+              <option value="clove(s)">ea</option>
+              <option value="bag(s)">ea</option>
+              <option value="slice(s)">ea</option>
+              <option value="can(s)">ea</option>
             </Form.Select>
           </Col>
-          <Col xs={4}>
+          <Col xs={11} sm={11} md={6} lg={6}>
             <Form.Label>Item</Form.Label>
             <Form.Control
               type="text"
-              size="sm"
               id="item"
               value={state.item.value}
               onChange={(e) => handleItemChange(e)}
             />
           </Col>
-          <Col xs={1}>
+          <Col xs={1} sm={1} md={1} lg={1}>
             <Button
               type="button"
               className="rounded-circle"
