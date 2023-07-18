@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate,useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import RecipeForm from "../components/recipes/RecipeForm";
 import { getRecipeById, deleteRecipeById } from "../services/recipe-service";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { BsFillTrashFill } from "react-icons/bs";
 
 const EditRecipe = () => {
   const { id } = useParams();
   const [currentRecipe, setCurrentRecipe] = useState({});
   const [loaded, setLoaded] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const deleteRecipe = async (recipeId) => {
-    const deletedRecipe = await deleteRecipeById(recipeId)
-    console.log(deletedRecipe)
-    navigate('/chef/recipes/all')
-  }
+    const deletedRecipe = await deleteRecipeById(recipeId);
+    console.log(deletedRecipe);
+    navigate("/chef/recipes/all");
+  };
   useEffect(() => {
     (async () => {
       try {

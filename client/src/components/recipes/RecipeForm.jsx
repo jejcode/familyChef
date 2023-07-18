@@ -1,11 +1,11 @@
 import React, { useReducer, useRef } from "react";
-import "../../App.css"
+import "../../App.css";
 import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import xMark from '../../assets/x-mark.png'
+import xMark from "../../assets/x-mark.png";
 
 import { createRecipe, updateRecipe } from "../../services/recipe-service";
 
@@ -222,7 +222,7 @@ const reducer = (state, action) => {
 
 const RecipeForm = (props) => {
   const { editRecipe } = props;
-  const inputRef = useRef(null)
+  const inputRef = useRef(null);
   const navigate = useNavigate();
 
   if (editRecipe) {
@@ -303,7 +303,6 @@ const RecipeForm = (props) => {
     });
   };
   const handleAmountChange = (e) => {
-    
     if (!e.target.value) {
       dispatch({
         type: "SET_AMOUNT_ERROR",
@@ -412,7 +411,7 @@ const RecipeForm = (props) => {
       type: "SET_ITEM_VALUE",
       payload: [""],
     });
-    inputRef.current.focus()
+    inputRef.current.focus();
   };
   const handleDirectionsChange = (e) => {
     if (e.target.value.length < 5) {
@@ -441,11 +440,11 @@ const RecipeForm = (props) => {
         return arr;
       }, []),
     });
-    if(state.ingredients.value.length === 0) {
+    if (state.ingredients.value.length === 0) {
       dispatch({
         type: "SET_INGREDIENTS_ERROR",
-        payload: "Requires at least one ingredient."
-      })
+        payload: "Requires at least one ingredient.",
+      });
     }
   };
   const cancelForm = () => {
@@ -468,29 +467,48 @@ const RecipeForm = (props) => {
     if (editRecipe) {
       try {
         const updatedRecipe = await updateRecipe(editRecipe._id, recipeToSave);
-        if(updatedRecipe._id) navigate(`/chef/recipes/${updatedRecipe._id}/view`);
+        if (updatedRecipe._id)
+          navigate(`/chef/recipes/${updatedRecipe._id}/view`);
       } catch (err) {
-        console.log('pre-if statement:', err.response.data)
+        console.log("pre-if statement:", err.response.data);
         if (err.response && err.response.data) {
-          const {errors} = err.response.data
-          console.log('errors object', errors)
+          const { errors } = err.response.data;
+          console.log("errors object", errors);
           if (errors.title) {
-            dispatch({ type: "SET_TITLE_ERROR", payload: errors.title.message });
+            dispatch({
+              type: "SET_TITLE_ERROR",
+              payload: errors.title.message,
+            });
           }
           if (errors.description) {
-            dispatch({ type: "SET_DESCRIPTION_ERROR", payload: errors.description.message });
+            dispatch({
+              type: "SET_DESCRIPTION_ERROR",
+              payload: errors.description.message,
+            });
           }
           if (errors.prepTime) {
-            dispatch({ type: "SET_PREPTIME_ERROR", payload: errors.prepTime.message });
+            dispatch({
+              type: "SET_PREPTIME_ERROR",
+              payload: errors.prepTime.message,
+            });
           }
           if (errors.servings) {
-            dispatch({ type: "SET_SERVINGS_ERROR", payload: errors.servings.message });
+            dispatch({
+              type: "SET_SERVINGS_ERROR",
+              payload: errors.servings.message,
+            });
           }
           if (errors.directions) {
-            dispatch({ type: "SET_DIRECTIONS_ERROR", payload: errors.directions.message });
+            dispatch({
+              type: "SET_DIRECTIONS_ERROR",
+              payload: errors.directions.message,
+            });
           }
           if (errors.ingredients) {
-            dispatch({ type: "SET_INGREDIENTS_ERROR", payload: errors.ingredients.message });
+            dispatch({
+              type: "SET_INGREDIENTS_ERROR",
+              payload: errors.ingredients.message,
+            });
           }
         }
       }
@@ -561,14 +579,17 @@ const RecipeForm = (props) => {
         </Row>
       </Form.Group>
       <div id="addedIngredients" className="mb-3 p-2">
-        {state.ingredients.error &&
+        {state.ingredients.error && (
           <div className="text-danger">{state.ingredients.error}</div>
-        }
-        
+        )}
+
         {state.ingredients.value.length > 0 &&
           state.ingredients.value.map((ingredient, index) => {
             return (
-              <Row key={index} className="align-items-center m-2 p-2 justify-content-between deleteHover">
+              <Row
+                key={index}
+                className="align-items-center m-2 p-2 justify-content-between deleteHover"
+              >
                 <Col className="p-2">
                   <span>
                     {ingredient.amount} {ingredient.measurement}{" "}
@@ -576,7 +597,12 @@ const RecipeForm = (props) => {
                   </span>
                 </Col>
                 <Col className="d-flex justify-content-end">
-                  <img src={xMark} className="changePointer" width="25" onClick={() => removeIngredientFromList(index)} />
+                  <img
+                    src={xMark}
+                    className="changePointer"
+                    width="25"
+                    onClick={() => removeIngredientFromList(index)}
+                  />
                 </Col>
               </Row>
             );
@@ -647,7 +673,10 @@ const RecipeForm = (props) => {
         <div className="text-danger mx-1">{state.item.error}</div>
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Directions: <span className="text-danger">{state.directions.error}</span></Form.Label>
+        <Form.Label>
+          Directions:{" "}
+          <span className="text-danger">{state.directions.error}</span>
+        </Form.Label>
         <Form.Control
           as="textarea"
           placeholder="Type in directions."

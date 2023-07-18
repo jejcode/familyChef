@@ -9,16 +9,16 @@ const NewMenu = () => {
     <Container>
       <Row>
         <Col>
-        <h1>Create New Menu</h1>
+          <h1>Create New Menu</h1>
         </Col>
       </Row>
       <Row>
         <Col>
-          <MenuForm editForm={false}/>
+          <MenuForm editForm={false} />
         </Col>
       </Row>
     </Container>
-  )
-}
+  );
+};
 
-export default NewMenu
+export default NewMenu;

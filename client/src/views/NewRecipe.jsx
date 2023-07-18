@@ -14,7 +14,7 @@ const NewRecipe = () => {
       </Row>
       <Row>
         <Col>
-          <RecipeForm editRecipe={false}/>
+          <RecipeForm editRecipe={false} />
         </Col>
       </Row>
     </Container>

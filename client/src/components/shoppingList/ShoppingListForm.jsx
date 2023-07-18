@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 import { getMenusByDateRange } from "../../services/menu-service";
 
 const ShoppingListForm = (props) => {
-  const {setAllIngredients} = props
+  const { setAllIngredients } = props;
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
 
@@ -22,49 +22,51 @@ const ShoppingListForm = (props) => {
     e.preventDefault();
     (async () => {
       try {
-        const menus = await getMenusByDateRange({ start, end: end || start});
-        const ingredientList = []
+        const menus = await getMenusByDateRange({ start, end: end || start });
+        const ingredientList = [];
 
         // following forEach sequence developed with the help of chat GPT
-        menus.forEach(menu => {
-          menu.recipes.forEach(recipe => {
-            recipe.ingredients.forEach(ingredient => {
+        menus.forEach((menu) => {
+          menu.recipes.forEach((recipe) => {
+            recipe.ingredients.forEach((ingredient) => {
               const existingIngredientIndex = ingredientList.findIndex(
                 (item) => item.item === ingredient.item
-              )
+              );
               const convertStringToNum = (string) => {
-                const trimmedString = string.trim()
-                const parts = trimmedString.split(' ')
-                let wholeNum = 0
-                let fraction = 0
-                let numerator = 0
-                let denominator = 1
-          
-                if(parts.length === 2) {
-                  [wholeNum, fraction] = parts
+                const trimmedString = string.trim();
+                const parts = trimmedString.split(" ");
+                let wholeNum = 0;
+                let fraction = 0;
+                let numerator = 0;
+                let denominator = 1;
+
+                if (parts.length === 2) {
+                  [wholeNum, fraction] = parts;
                 } else {
-                  [fraction] = parts
+                  [fraction] = parts;
                 }
-                if(fraction.includes('/')) {
-                  [numerator, denominator] = fraction.split('/')
+                if (fraction.includes("/")) {
+                  [numerator, denominator] = fraction.split("/");
                 } else {
-                  wholeNum = fraction
+                  wholeNum = fraction;
                 }
-                return parseFloat(wholeNum) + parseFloat(numerator / denominator)
-              }
-              ingredient.amount = convertStringToNum(ingredient.amount)
-              if(existingIngredientIndex !== -1) {
-                ingredientList[existingIngredientIndex].amount += ingredient.amount
+                return (
+                  parseFloat(wholeNum) + parseFloat(numerator / denominator)
+                );
+              };
+              ingredient.amount = convertStringToNum(ingredient.amount);
+              if (existingIngredientIndex !== -1) {
+                ingredientList[existingIngredientIndex].amount +=
+                  ingredient.amount;
               } else {
-                ingredientList.push(ingredient)
+                ingredientList.push(ingredient);
               }
-            })
-          })
+            });
+          });
         });
-        setAllIngredients(ingredientList)
-        
+        setAllIngredients(ingredientList);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     })();
   };

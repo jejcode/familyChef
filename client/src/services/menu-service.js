@@ -40,9 +40,11 @@ const getMenuByDate = async (dateString) => {
 };
 const getMenusByDateRange = async (dateRange) => {
   try {
-    console.log(dateRange)
-    const filteredMenus = await instance.get('/menus/search/range', {params: dateRange});
-    console.log(filteredMenus.data)
+    console.log(dateRange);
+    const filteredMenus = await instance.get("/menus/search/range", {
+      params: dateRange,
+    });
+    console.log(filteredMenus.data);
     return filteredMenus.data;
   } catch (error) {
     console.log(error);
@@ -87,5 +89,5 @@ export {
   getMenusByDateRange,
   updateMenuById,
   updateMenuRecipes,
-  deleteMenuById
+  deleteMenuById,
 };

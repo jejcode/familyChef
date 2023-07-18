@@ -3,8 +3,7 @@ import ViewAllMenus from "./ViewAllMenus";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import PageLinks from "../navigation/PageLinks"
-
+import PageLinks from "../navigation/PageLinks";
 
 const AllMenus = () => {
   return (
@@ -14,12 +13,12 @@ const AllMenus = () => {
           <h2>All Menus</h2>
         </Col>
         <Col>
-          <PageLinks addLinks={[{href: '/chef/menus/new', text: 'New'}]}/>
+          <PageLinks addLinks={[{ href: "/chef/menus/new", text: "New" }]} />
         </Col>
       </Row>
       <Row>
         <Col>
-          <ViewAllMenus showAllMenus={true}/>
+          <ViewAllMenus showAllMenus={true} />
         </Col>
       </Row>
     </Container>

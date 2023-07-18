@@ -5,14 +5,18 @@ import Button from "react-bootstrap/esm/Button";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
-import xMark from '../../assets/x-mark.png'
+import xMark from "../../assets/x-mark.png";
 import { getAllRecipes } from "../../services/recipe-service";
-import { createMenu, getMenuById, updateMenuById } from "../../services/menu-service";
+import {
+  createMenu,
+  getMenuById,
+  updateMenuById,
+} from "../../services/menu-service";
 
 const MenuForm = (props) => {
-  const {editForm} = props
-  const {id} = useParams()
-  const [editMenuId, setEditMenuId] = useState("")
+  const { editForm } = props;
+  const { id } = useParams();
+  const [editMenuId, setEditMenuId] = useState("");
   const [menuDate, setMenuDate] = useState("");
   const [menuDateError, setMenuDateError] = useState("Date is required");
   const [menuNotes, setMenuNotes] = useState("");
@@ -56,7 +60,7 @@ const MenuForm = (props) => {
   };
 
   const deleteRecipeFromMenu = (recipeIndex) => {
-    setSelectedRecipes(prevSelectedRecipes =>
+    setSelectedRecipes((prevSelectedRecipes) =>
       prevSelectedRecipes.reduce((arr, recipe, index) => {
         if (index != recipeIndex) arr.push(recipe);
         return arr;
@@ -70,13 +74,13 @@ const MenuForm = (props) => {
         setAllRecipes(listOfRecipes);
         setLoaded(true);
 
-        if(editForm) {
-          const thisMenu = await getMenuById(id)
-          setEditMenuId(thisMenu._id)
-          setMenuDate(thisMenu.date.slice(0,10))
-          setMenuDateError("")
-          setMenuNotes(thisMenu.notes)
-          setSelectedRecipes(thisMenu.recipes)
+        if (editForm) {
+          const thisMenu = await getMenuById(id);
+          setEditMenuId(thisMenu._id);
+          setMenuDate(thisMenu.date.slice(0, 10));
+          setMenuDateError("");
+          setMenuNotes(thisMenu.notes);
+          setSelectedRecipes(thisMenu.recipes);
         }
       } catch (err) {
         console.log(err);
@@ -84,8 +88,8 @@ const MenuForm = (props) => {
     })();
   }, []);
   const cancelForm = () => {
-    navigate('/chef/menus/all')
-  }
+    navigate("/chef/menus/all");
+  };
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     const recipeIds = selectedRecipes.map((recipe) => recipe._id);
@@ -93,11 +97,11 @@ const MenuForm = (props) => {
       date: menuDate,
       recipes: recipeIds,
       notes: menuNotes,
-    }
+    };
     try {
-      if(editForm) {
-        const updateMenu = await updateMenuById(editMenuId, menuData)
-        navigate(`chef/menus/${editMenuId}/view`)
+      if (editForm) {
+        const updateMenu = await updateMenuById(editMenuId, menuData);
+        navigate(`chef/menus/${editMenuId}/view`);
       } else {
         const newMenu = await createMenu(menuData);
       }
@@ -110,7 +114,10 @@ const MenuForm = (props) => {
     <Container className="m-2">
       {loaded && (
         <>
-          <Form onSubmit={(e) => onSubmitHandler(e)} className="p-4 border bg-light">
+          <Form
+            onSubmit={(e) => onSubmitHandler(e)}
+            className="p-4 border bg-light"
+          >
             <Form.Group as={Row} className="align-items-end mb-2">
               <Col xs="12" sm="12" md="4" lg="4">
                 <Form.Label>
@@ -139,9 +146,17 @@ const MenuForm = (props) => {
                   <div>
                     {selectedRecipes.map((recipe, index) => {
                       return (
-                        <div key={index} className="mb-2 p-2 border d-flex justify-content-between deleteHover">
+                        <div
+                          key={index}
+                          className="mb-2 p-2 border d-flex justify-content-between deleteHover"
+                        >
                           {recipe.title}
-                          <img className="changePointer ms-4" src={xMark} width="25" onClick={() => deleteRecipeFromMenu(index)} />
+                          <img
+                            className="changePointer ms-4"
+                            src={xMark}
+                            width="25"
+                            onClick={() => deleteRecipeFromMenu(index)}
+                          />
                         </div>
                       );
                     })}
@@ -150,11 +165,15 @@ const MenuForm = (props) => {
               </Col>
             </Form.Group>
             <div className=" d-flex justify-content-center">
-              <Button variant="light" className="me-4" onClick={cancelForm}>Cancel</Button>
-              <Button type="submit" variant="success">Save</Button>
+              <Button variant="light" className="me-4" onClick={cancelForm}>
+                Cancel
+              </Button>
+              <Button type="submit" variant="success">
+                Save
+              </Button>
             </div>
           </Form>
-          
+
           <Row className="my-3">
             <Col>
               <Form.Control

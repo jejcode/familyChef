@@ -5,7 +5,6 @@ import Container from "react-bootstrap/Container";
 import PageLinks from "../navigation/PageLinks";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { BsFillPencilFill } from "react-icons/bs";
 
 const ViewRecipe = () => {
   const { id } = useParams();

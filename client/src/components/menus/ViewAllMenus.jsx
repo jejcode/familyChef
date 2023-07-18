@@ -31,7 +31,7 @@ const ViewAllMenus = (props) => {
       const limit = new Date();
       limit.setDate(limit.getDate() + 6);
       const endDate = limit.toISOString().slice(0, 10);
-      console.log('date range', today, endDate);
+      console.log("date range", today, endDate);
       (async () => {
         try {
           const weekOfMenus = await getMenusByDateRange({
@@ -39,11 +39,11 @@ const ViewAllMenus = (props) => {
             end: endDate,
           });
           if (weekOfMenus.length === 0) return;
-          console.log("week of menus:", weekOfMenus[0].date.slice(0,10))
+          console.log("week of menus:", weekOfMenus[0].date.slice(0, 10));
           if (today == weekOfMenus[0].date.slice(0, 10)) {
             const [menuToday, ...restOfMenus] = weekOfMenus;
-            console.log(menuToday)
-            console.log(restOfMenus)
+            console.log(menuToday);
+            console.log(restOfMenus);
             setTodaysMenu(menuToday);
             setAllMenus(restOfMenus);
           } else {
@@ -77,7 +77,7 @@ const ViewAllMenus = (props) => {
                   </td>
                   <td>
                     {menu.recipes.map((recipe, rIndex) => {
-                      console.log(recipe)
+                      console.log(recipe);
                       return (
                         <div key={rIndex}>
                           <Link
@@ -86,9 +86,7 @@ const ViewAllMenus = (props) => {
                           >
                             {recipe.title}
                           </Link>
-                          
                         </div>
-                        
                       );
                     })}
                     {menu.notes && <div>Notes: {menu.notes}</div>}

@@ -36,13 +36,16 @@ const updateRecipe = async (id, formData) => {
     const updatedRecipe = await instance.put(`/recipes/${id}/edit`, formData);
     return updatedRecipe.data;
   } catch (err) {
-    throw err
+    throw err;
   }
 };
 
 const updateAllRecipesOnMenu = async (recipes) => {
   try {
-    const recipesWithMenuIds = await instance.put("/recipes/menus/update", recipes);
+    const recipesWithMenuIds = await instance.put(
+      "/recipes/menus/update",
+      recipes
+    );
     console.log(recipesWithMenuIds);
     return recipesWithMenuIds.data;
   } catch (err) {
@@ -52,18 +55,18 @@ const updateAllRecipesOnMenu = async (recipes) => {
 
 const deleteRecipeById = async (recipeId) => {
   try {
-    console.log('services is deleting...')
-    const deletedRecipe = await instance.delete(`/recipes/${recipeId}/delete`)
-    return deletedRecipe.data
+    console.log("services is deleting...");
+    const deletedRecipe = await instance.delete(`/recipes/${recipeId}/delete`);
+    return deletedRecipe.data;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 export {
   createRecipe,
   getAllRecipes,
   getRecipeById,
   updateRecipe,
   updateAllRecipesOnMenu,
-  deleteRecipeById
+  deleteRecipeById,
 };

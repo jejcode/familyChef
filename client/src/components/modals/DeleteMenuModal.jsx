@@ -1,54 +1,59 @@
-import React, {useState} from 'react'
-import '../../App.css'
-import { deleteMenuById } from '../../services/menu-service'
-import Modal from 'react-bootstrap/Modal'
-import Button from 'react-bootstrap/Button'
-import xMark from '../../assets/x-mark.png'
+import React, { useState } from "react";
+import "../../App.css";
+import { deleteMenuById } from "../../services/menu-service";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import xMark from "../../assets/x-mark.png";
 
 const DeleteMenuModal = (props) => {
-  const {menuId, setAllMenus} = props
-  const [show, setShow] = useState(false)
+  const { menuId, setAllMenus } = props;
+  const [show, setShow] = useState(false);
 
-  const handleShow = () => setShow(true)
-  const handleClose = () => setShow(false)
+  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
 
   const deleteItem = async () => {
     try {
-      const deletedMenu = await deleteMenuById(menuId)
-      setAllMenus(prevAllMenus => {
+      const deletedMenu = await deleteMenuById(menuId);
+      setAllMenus((prevAllMenus) => {
         const newMenuList = prevAllMenus.reduce((acc, menu) => {
-          if(menu._id != deletedMenu._id) {
-            acc.push(menu)
+          if (menu._id != deletedMenu._id) {
+            acc.push(menu);
           }
-          return acc
-        }, [])
-        return newMenuList
-      })
-      handleClose()
+          return acc;
+        }, []);
+        return newMenuList;
+      });
+      handleClose();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-    
-  }
+  };
   return (
     <>
-      <img src={xMark} alt="x delete" width="25" onClick={handleShow} className="changePointer"/>
+      <img
+        src={xMark}
+        alt="x delete"
+        width="25"
+        onClick={handleShow}
+        className="changePointer"
+      />
       <Modal show={show} onHide={handleClose}>
         <Modal.Header>
-            <Modal.Title>Delete Menu</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>Are you sure you want to delete menu?</Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Cancel
-            </Button>
-            <Button variant="danger" onClick={deleteItem}>
-              Delete
-            </Button>
-          </Modal.Footer>
+          <Modal.Title>Delete Menu</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete menu?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={deleteItem}>
+            Delete
+          </Button>
+        </Modal.Footer>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default DeleteMenuModal
+export default DeleteMenuModal;
