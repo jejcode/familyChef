@@ -6,6 +6,18 @@ import Recipe from "../models/recipe.model.js";
 // Create
 const createRecipe = async (req, res) => {
   try {
+    // validate recipe by first creating a new instance:
+    const newRecipe = new Recipe(req.body);
+    const validationError = newRecipe.validateSync(); // Synchronous validation
+
+    // Check for validation errors
+    if (validationError) {
+      const errors = {};
+      for (const field in validationError.errors) {
+        errors[field] = validationError.errors[field].message;
+      }
+      return res.status(400).json({ errors });
+    }
     // check to see if there's another recipe by the same title
     const recipeExists = await Recipe.findOne({ title: req.body.title });
     if (recipeExists) {
@@ -17,7 +29,7 @@ const createRecipe = async (req, res) => {
       return res.status(201).json(newRecipe);
     }
   } catch (err) {
-    console.log("server returns this error:", err);
+    return res.status(400).json(err);
   }
 };
 
@@ -27,7 +39,7 @@ const getAllRecipes = async (req, res) => {
     const allRecipes = await Recipe.find().sort({title: 'asc'});
     return res.json(allRecipes);
   } catch (err) {
-    console.log(err);
+    return res.status(500).json(err)
   }
 };
 
@@ -36,7 +48,7 @@ const getOneRecipeById = async (req, res) => {
     const recipe = await Recipe.findOne({ _id: req.params.id });
     return res.json(recipe);
   } catch (err) {
-    res.status(400).json(err);
+    return res.status(400).json(err);
   }
 };
 
@@ -68,18 +80,16 @@ const updateRecipe = async (req, res) => {
     const updatedRecipe = await Recipe.findOneAndUpdate(
       { _id: req.params.id },
       req.body,
-      { new: true }
+      { new: true, runValidators: true }
     );
     return res.json(updatedRecipe);
   } catch (err) {
-    console.log(err);
+    return res.status(400).json(err)
   }
 };
 
+// Adds menu id to each recipe on the menu
 const updateAllRecipesOnMenu = async (req, res) => {
-  //req.body has menuId and an array of recipeIds
-  // console.log('menuId:', req.body.menuId)
-  // console.log('recipe Ids:', req.body.recipeIds)
   try {
     const recipesWithMenus = await Recipe.updateMany(
       { _id: { $in: req.body.recipeIds } },
@@ -88,7 +98,7 @@ const updateAllRecipesOnMenu = async (req, res) => {
     );
     return res.json(recipesWithMenus.data)
   } catch (err) {
-    console.log(err);
+    return res.status(404).json(err)
   }
 };
 
@@ -104,7 +114,7 @@ const deleteRecipe = async (req, res) => {
     // delete recipe Id from any menus
     return res.json(deleteConfirmed);
   } catch (err) {
-    res.json(err);
+    res.status(400).json(err);
   }
 };
 

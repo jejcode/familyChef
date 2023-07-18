@@ -36,7 +36,7 @@ const updateRecipe = async (id, formData) => {
     const updatedRecipe = await instance.put(`/recipes/${id}/edit`, formData);
     return updatedRecipe.data;
   } catch (err) {
-    console.log(err);
+    throw err
   }
 };
 

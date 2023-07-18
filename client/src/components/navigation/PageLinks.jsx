@@ -6,7 +6,7 @@ const PageLinks = (props) => {
     <div className="d-flex justify-content-end">
       {addLinks && addLinks.map((info, index) => {
         return (
-          <span>
+          <span key={index}>
             <Link to={info.href} className="mx-2 text-success">{info.text}</Link>|
           </span>
         )

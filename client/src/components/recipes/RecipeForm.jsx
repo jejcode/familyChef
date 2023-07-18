@@ -26,7 +26,7 @@ const intialState = {
     error: "",
   },
   ingredients: {
-    value: [],
+    value: "",
     error: "",
   },
   directions: {
@@ -396,6 +396,10 @@ const RecipeForm = (props) => {
       payload: [...state.ingredients.value, ingredientData],
     });
     dispatch({
+      type: "SET_INGREDIENTS_ERROR",
+      payload: "",
+    });
+    dispatch({
       type: "SET_AMOUNT_VALUE",
       payload: [""],
     });
@@ -437,6 +441,12 @@ const RecipeForm = (props) => {
         return arr;
       }, []),
     });
+    if(state.ingredients.value.length === 0) {
+      dispatch({
+        type: "SET_INGREDIENTS_ERROR",
+        payload: "Requires at least one ingredient."
+      })
+    }
   };
   const cancelForm = () => {
     if (editRecipe) {
@@ -459,10 +469,31 @@ const RecipeForm = (props) => {
     if (editRecipe) {
       try {
         const updatedRecipe = await updateRecipe(editRecipe._id, recipeToSave);
-        console.log(updatedRecipe);
-        navigate(`/chef/recipes/${updatedRecipe._id}/view`);
+        if(updatedRecipe._id) navigate(`/chef/recipes/${updatedRecipe._id}/view`);
       } catch (err) {
-        console.log(err);
+        console.log('pre-if statement:', err.response.data)
+        if (err.response && err.response.data) {
+          const {errors} = err.response.data
+          console.log('errors object', errors)
+          if (errors.title) {
+            dispatch({ type: "SET_TITLE_ERROR", payload: errors.title.message });
+          }
+          if (errors.description) {
+            dispatch({ type: "SET_DESCRIPTION_ERROR", payload: errors.description.message });
+          }
+          if (errors.prepTime) {
+            dispatch({ type: "SET_PREPTIME_ERROR", payload: errors.prepTime.message });
+          }
+          if (errors.servings) {
+            dispatch({ type: "SET_SERVINGS_ERROR", payload: errors.servings.message });
+          }
+          if (errors.directions) {
+            dispatch({ type: "SET_DIRECTIONS_ERROR", payload: errors.directions.message });
+          }
+          if (errors.ingredients) {
+            dispatch({ type: "SET_INGREDIENTS_ERROR", payload: errors.ingredients.message });
+          }
+        }
       }
     } else {
       try {
@@ -471,7 +502,7 @@ const RecipeForm = (props) => {
           navigate("/chef/recipes/all");
         }
       } catch (err) {
-        console.log(err);
+        console.log("Errors from back end", err);
       }
     }
   };
@@ -531,6 +562,10 @@ const RecipeForm = (props) => {
         </Row>
       </Form.Group>
       <div id="addedIngredients" className="mb-3 p-2">
+        {state.ingredients.error &&
+          <div className="text-danger">{state.ingredients.error}</div>
+        }
+        
         {state.ingredients.value.length > 0 &&
           state.ingredients.value.map((ingredient, index) => {
             return (
@@ -612,7 +647,7 @@ const RecipeForm = (props) => {
         <div className="text-danger mx-1">{state.item.error}</div>
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Directions:</Form.Label>
+        <Form.Label>Directions: <span className="text-danger">{state.directions.error}</span></Form.Label>
         <Form.Control
           as="textarea"
           placeholder="Type in directions."
