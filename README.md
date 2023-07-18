@@ -2,6 +2,9 @@
 
 Family Chef is a fullstack MERN project styled with Bootstrap.
 
+Create, edit and delete recipes. Create menus to add recipes. 
+Click shopping list to get a list of ingredients for upcoming meals.
+
 
 
 Backlog:
