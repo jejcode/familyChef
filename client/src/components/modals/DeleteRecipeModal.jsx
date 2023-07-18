@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button'
 import xMark from '../../assets/x-mark.png'
 
 const DeleteRecipeModal = (props) => {
-  const {recipeId, setDeletedRecipe} = props
+  const {recipeId, setAllRecipes, allRecipes} = props
   const [show, setShow] = useState(false)
 
   const handleShow = () => setShow(true)
@@ -15,7 +15,15 @@ const DeleteRecipeModal = (props) => {
   const deleteItem = async () => {
     try {
       const deletedRecipe = await deleteRecipeById(recipeId)
-      setDeletedRecipe(deletedRecipe)
+      setAllRecipes(prevAllRecipes => {
+        const newRecipeList = prevAllRecipes.reduce((acc, recipe) => {
+          if(recipe._id != deletedRecipe._id) {
+            acc.push(recipe)
+          }
+          return acc
+        }, [])
+        return newRecipeList
+      })
       handleClose()
     } catch (error) {
       console.log(error)
