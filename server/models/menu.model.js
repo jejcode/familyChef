@@ -11,7 +11,7 @@ const MenuSchema = new mongoose.Schema({
   }],
   notes: {
     type: String,
-    maxlength: 250
+    maxlength: [250, "Max characters of 250"]
   }
 });
 

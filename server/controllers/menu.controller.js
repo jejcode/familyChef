@@ -58,7 +58,7 @@ const updateMenu = async (req, res) => {
     const updatedMenu = await Menu.findOneAndUpdate(
       { _id: req.params.id },
       req.body,
-      { new: true }
+      { new: true }, { runValidators: true }
     );
     return res.json(updatedMenu);
   } catch (err) {
