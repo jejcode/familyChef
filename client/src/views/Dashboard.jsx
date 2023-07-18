@@ -19,7 +19,7 @@ const Dashboard = () => {
   return (
     <Container>
       <Row className="justify-content-center">
-        <Col xs="auto" sm="auto" md="auto" lg="auto">
+        <Col xs="10" sm="10" md="10" lg="10" xl="10" xxl="10">
           <h1>Today's Menu</h1>
           {todaysMenu ? (
             <div className="p-4 mb-4 bg-light rounded border border-success">
@@ -57,7 +57,7 @@ const Dashboard = () => {
         </Col>
       </Row>
       <Row className="justify-content-center">
-        <Col xs="auto" sm="auto" md="auto" lg="auto">
+        <Col xs="10" sm="10" md="10" lg="8" xl="6" xxl="6">
           <Row className="justify-content-between">
             <Col xs="auto" sm="auto" md="auto" lg="auto">
               <h5>Upcoming menus</h5>
