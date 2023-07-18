@@ -24,7 +24,7 @@ const createRecipe = async (req, res) => {
 // Read
 const getAllRecipes = async (req, res) => {
   try {
-    const allRecipes = await Recipe.find();
+    const allRecipes = await Recipe.find().sort({title: 'asc'});
     return res.json(allRecipes);
   } catch (err) {
     console.log(err);

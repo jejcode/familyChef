@@ -6,6 +6,7 @@ import PageLinks from "../navigation/PageLinks";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {BsFillPencilFill} from "react-icons/bs"
+
 const ViewRecipe = () => {
   const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
@@ -26,15 +27,14 @@ const ViewRecipe = () => {
 
   return (
     <Container className="mt-2 ">
-      <PageLinks />
       {loaded && (
         <>
-          <Row>
+          <Row className="justify-content-between">
             <Col >
-              <h2 className="d-flex justify-content-center">{recipe.title}</h2>
+              <h2>{recipe.title}</h2>
             </Col>
             <Col>
-              <Link to={`/chef/recipes/${recipe._id}/edit`}><BsFillPencilFill /></Link>
+              <PageLinks addLinks={[{href: `/chef/recipes/${recipe._id}/edit`, text: 'Edit'}]}/>
             </Col>
           </Row>
           <Row className="mb-3">
@@ -47,7 +47,7 @@ const ViewRecipe = () => {
             </Col>
           </Row>
           <Row>
-            <Col>
+            <Col xs="12" sm="12" md="6" lg="6">
               <h3>Ingredients:</h3>
               {recipe.ingredients.map((ingredient, index) => {
                 return (
@@ -58,7 +58,7 @@ const ViewRecipe = () => {
                 );
               })}
             </Col>
-            <Col>
+            <Col xs="12" sm="12" md="6" lg="6">
               <h3>Directions:</h3>
               <p>{recipe.directions}</p>
             </Col>

@@ -7,11 +7,11 @@ const PageLinks = (props) => {
       {addLinks && addLinks.map((info, index) => {
         return (
           <span>
-            <Link to={info.href} className="mx-2">{info.text}</Link>|
+            <Link to={info.href} className="mx-2 text-success">{info.text}</Link>|
           </span>
         )
       })}
-      <Link to="/dashboard" className="ms-2">Home</Link>
+      <Link to="/dashboard" className="ms-2 text-success">Home</Link>
     </div>
   )
 }

@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getAllRecipes } from "../../services/recipe-service";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import {BsFillPlusCircleFill, BsJournalPlus} from "react-icons/bs"
+import Table from "react-bootstrap/Table"
+import PageLinks from "../navigation/PageLinks"
+import editIcon from "../../assets/writing.png"
 
 const AllRecipes = () => {
   const [loaded, setLoaded] = useState(false);
   const [allRecipes, setAllRecipes] = useState([]);
+  const navigate=useNavigate()
 
+  const editRecipe = (recipeId) => {
+    navigate(`/chef/recipes/${recipeId}/edit`)
+  }
   useEffect(() => {
     (async () => {
       try {
@@ -29,12 +35,34 @@ const AllRecipes = () => {
           <h2>All Recipes</h2>
         </Col>
         <Col>
-        <Link to="/chef/recipes/new">
-          <BsFillPlusCircleFill />
-        </Link>
+          <PageLinks addLinks={[{href: `/chef/recipes/new`, text: 'New'}]}/>
         </Col>
       </Row>
-      <Row>
+      <Table>
+        <thead>
+          <tr>
+            <th>Recipe</th>
+            <th>Servings</th>
+            <th>Time</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {allRecipes.map((recipe, index) => {
+            return (
+              <tr key={index}>
+                <td>
+                  <Link className="text-success" to={`/chef/recipes/${recipe._id}/view`}>{recipe.title}</Link>
+                </td>
+                <td>{recipe.servings}</td>
+                <td>{recipe.prepTime}</td>
+                <td><img className="changePointer" src={editIcon} alt="edit pencil" width="25" onClick={() => editRecipe(recipe._id)}></img></td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </Table>
+      {/* <Row>
         <Col>
           {allRecipes.map((recipe, index) => {
             return (
@@ -51,7 +79,7 @@ const AllRecipes = () => {
             );
           })}
         </Col>
-      </Row>
+      </Row> */}
     </Container>
   );
 };
