@@ -5,7 +5,7 @@ import Container from "react-bootstrap/Container";
 import PageLinks from "../navigation/PageLinks";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import {BsFillPencilFill} from "react-icons/bs"
+import { BsFillPencilFill } from "react-icons/bs";
 
 const ViewRecipe = () => {
   const { id } = useParams();
@@ -30,11 +30,15 @@ const ViewRecipe = () => {
       {loaded && (
         <>
           <Row className="justify-content-between">
-            <Col >
+            <Col>
               <h2>{recipe.title}</h2>
             </Col>
             <Col>
-              <PageLinks addLinks={[{href: `/chef/recipes/${recipe._id}/edit`, text: 'Edit'}]}/>
+              <PageLinks
+                addLinks={[
+                  { href: `/chef/recipes/${recipe._id}/edit`, text: "Edit" },
+                ]}
+              />
             </Col>
           </Row>
           <Row className="mb-3">

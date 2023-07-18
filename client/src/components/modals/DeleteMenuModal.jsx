@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button'
 import xMark from '../../assets/x-mark.png'
 
 const DeleteMenuModal = (props) => {
-  const {menuId, setDeletedMenu} = props
+  const {menuId, setAllMenus} = props
   const [show, setShow] = useState(false)
 
   const handleShow = () => setShow(true)
@@ -15,7 +15,15 @@ const DeleteMenuModal = (props) => {
   const deleteItem = async () => {
     try {
       const deletedMenu = await deleteMenuById(menuId)
-      setDeletedMenu(deletedMenu)
+      setAllMenus(prevAllMenus => {
+        const newMenuList = prevAllMenus.reduce((acc, menu) => {
+          if(menu._id != deletedMenu._id) {
+            acc.push(menu)
+          }
+          return acc
+        }, [])
+        return newMenuList
+      })
       handleClose()
     } catch (error) {
       console.log(error)

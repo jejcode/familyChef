@@ -10,7 +10,6 @@ const ViewAllMenus = (props) => {
   const { showAllMenus, setTodaysMenu } = props;
   const [loaded, setLoaded] = useState(false);
   const [allMenus, setAllMenus] = useState([]);
-  const [deletedMenu, setDeletedMenu] = useState("");
 
   useEffect(() => {
     if (showAllMenus) {
@@ -56,7 +55,7 @@ const ViewAllMenus = (props) => {
         }
       })();
     }
-  }, [deletedMenu]);
+  }, []);
   return (
     <>
       {loaded && (
@@ -103,7 +102,7 @@ const ViewAllMenus = (props) => {
                     </Link>
                     <DeleteMenuModal
                       menuId={menu._id}
-                      setDeletedMenu={setDeletedMenu}
+                      setAllMenus={setAllMenus}
                     />
                   </td>
                 </tr>
