@@ -52,7 +52,7 @@ const Dashboard = () => {
               </Row>
             </div>
           ) : (
-            <div>No menu for today. Click here to create one.</div>
+            <div>No menu for today. </div>
           )}
         </Col>
       </Row>
