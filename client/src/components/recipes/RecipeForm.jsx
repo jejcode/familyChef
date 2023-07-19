@@ -642,6 +642,7 @@ const RecipeForm = (props) => {
               <option value="g.">g</option>
               <option value="kg.">kg</option>
               <option value="doz.">doz</option>
+              <option value="ea.">ea</option>
               <option value="clove(s)">clove(s)</option>
               <option value="bag(s)">bag(s)</option>
               <option value="slice(s)">slice(s)</option>
