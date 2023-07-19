@@ -642,10 +642,10 @@ const RecipeForm = (props) => {
               <option value="g.">g</option>
               <option value="kg.">kg</option>
               <option value="doz.">doz</option>
-              <option value="clove(s)">ea</option>
-              <option value="bag(s)">ea</option>
-              <option value="slice(s)">ea</option>
-              <option value="can(s)">ea</option>
+              <option value="clove(s)">clove(s)</option>
+              <option value="bag(s)">bag(s)</option>
+              <option value="slice(s)">slice(s)</option>
+              <option value="can(s)">can(s)</option>
             </Form.Select>
           </Col>
           <Col xs={11} sm={11} md={6} lg={6}>
