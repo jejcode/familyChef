@@ -27,6 +27,7 @@ const ViewAllMenus = (props) => {
       const todayRawDate = new Date().toLocaleDateString();
       let [month, day, year] = todayRawDate.split("/");
       month = Number(month) < 10 ? `0${month}` : month;
+      day = Number(day) < 10 ? `0${day}` : day
       const today = `${year}-${month}-${day}`;
       const limit = new Date();
       limit.setDate(limit.getDate() + 6);
@@ -39,10 +40,11 @@ const ViewAllMenus = (props) => {
             end: endDate,
           });
           if (weekOfMenus.length === 0) return;
+          console.log('pre slice:', weekOfMenus)
           console.log("week of menus:", weekOfMenus[0].date.slice(0, 10));
           if (today == weekOfMenus[0].date.slice(0, 10)) {
             const [menuToday, ...restOfMenus] = weekOfMenus;
-            console.log(menuToday);
+            console.log('today:', menuToday);
             console.log(restOfMenus);
             setTodaysMenu(menuToday);
             setAllMenus(restOfMenus);
